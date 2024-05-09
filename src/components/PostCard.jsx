@@ -1,0 +1,90 @@
+import { useState } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import SkeletonPostCard from "./SkeletonPostCard";
+
+function PostCard({ post }) {
+  const [loading, setLoading] = useState(true);
+
+  const user = post.creator;
+  const dp = user.imageURL;
+  const [isLiked, setisLiked] = useState(false);
+  const [isSaved, setisSaved] = useState(false);
+
+  return (
+    <>
+      <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        {!loading ? (
+          <div className="post-card flex flex-col my-3">
+            <div className="cardTop mb-2 flex items-center ">
+              <img
+                src={dp}
+                alt={dp}
+                className="h-[45px] w-[45px] rounded-full mr-2 object-cover"
+              />
+              <div>
+                <div className="flex flex-col">
+                  <span className="text-lg">{user.name}</span>
+                  <span className="text-sm text-off-white opacity-60">
+                    2 hours ago
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="caption flex-1">
+              <span>{post.caption}</span>
+              <div className="captionPhoto w-full h-[full] overflow-hidden">
+                {post.imageUrl ? (
+                  <img
+                    onLoad={() => setLoading(false)}
+                    src={post.imageUrl}
+                    alt=""
+                    className="w-full  h-full object-cover mt-2 rounded-lg"
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <div className="reaction flex justify-between pt-5">
+              <svg
+                onClick={() => setisLiked((prev) => !prev)}
+                xmlns="http://www.w3.org/2000/svg"
+                fill={`${isLiked ? "#fb046e" : "none"}`}
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke={`${isLiked ? "#fb046e" : "currentColor"}`}
+                className="w-6 h-6 cursor-pointer active:scale-[0.94]"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                />
+              </svg>
+              <svg
+                onClick={() => setisSaved((prev) => !prev)}
+                xmlns="http://www.w3.org/2000/svg"
+                fill={`${isSaved ? "#5294df" : "none"}`}
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke={`${isSaved ? "#5294df" : "currentColor"}`}
+                className="w-6 h-6 cursor-pointer active:scale-[0.94]"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
+                />
+              </svg>
+            </div>
+          </div>
+        ) : (
+          <SkeletonPostCard post={post} setLoading={setLoading} dp={dp} />
+        )}
+      </SkeletonTheme>
+    </>
+  );
+}
+
+export default PostCard;
