@@ -1,0 +1,6 @@
+//react-router path fix
+{
+    "rewrites":  [
+      {"source": "/(.*)", "destination": "/"}
+    ]
+  }
