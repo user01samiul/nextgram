@@ -5,7 +5,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 function Home() {
   const { user, posts } = useAuth();
-  console.log(posts)
+ 
   
 
   const postCards = posts.map((post, index) => {

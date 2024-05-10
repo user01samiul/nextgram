@@ -59,7 +59,7 @@ function Navlinks() {
         </li>
         <li>
           <NavLink
-            to="/people"
+            to="people"
             className={({ isActive }) =>
               `flex gap-3 md:text-base lg:text-lg py-3 navlink mt-2 mb-2 rounded-md px-4 bg-purple ${
                 isActive ? "bg-[#ffc800] text-black" : "transparent"

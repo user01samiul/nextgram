@@ -26,5 +26,5 @@ dist-ssr
 #ignore
 snapgram_public.zip
 backup/*
-# .env
-# .env.local
+.env
+.env.local

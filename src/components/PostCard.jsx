@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
@@ -10,6 +10,54 @@ function PostCard({ post }) {
   const dp = user.imageURL;
   const [isLiked, setisLiked] = useState(false);
   const [isSaved, setisSaved] = useState(false);
+  const timestamp = post.$createdAt;
+  const [time, setTime] = useState(formatTimestamp(timestamp));
+
+  function formatTimestamp(timestamp) {
+    const now = new Date();
+    const targetDate = new Date(timestamp);
+
+    const diff = now - targetDate;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const years = Math.floor(days / 365);
+
+    if (years >= 1) {
+      return (
+        targetDate.getDate() +
+        "-" +
+        targetDate.toLocaleString("default", { month: "long" }) +
+        "-" +
+        targetDate.getFullYear()
+      );
+    } else if (days >= 3) {
+      return (
+        targetDate.getDate() +
+        "-" +
+        targetDate.toLocaleString("default", { month: "long" })
+      );
+    } else if (hours >= 1) {
+      return hours + " hours ago";
+    } else if (minutes >= 1) {
+      return minutes + " minutes ago";
+    } else {
+      return seconds + " seconds ago";
+    }
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(formatTimestamp(timestamp));
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  console.log(time);
 
   return (
     <>
@@ -26,7 +74,7 @@ function PostCard({ post }) {
                 <div className="flex flex-col">
                   <span className="text-lg">{user.name}</span>
                   <span className="text-sm text-off-white opacity-60">
-                    2 hours ago
+                    {time}
                   </span>
                 </div>
               </div>
