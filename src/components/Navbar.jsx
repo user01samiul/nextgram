@@ -11,8 +11,7 @@ function Navbar() {
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
-  console.log(showInfo);
-
+  
   return (
     <nav className="md:hidden flex  w-full h-[53px] sticky bg-[#131313] z-50 top-0">
       <div className=" flex items-center mr-auto">
