@@ -57,7 +57,7 @@ function PostCard({ post }) {
     };
   }, []);
 
-  console.log(time);
+
 
   return (
     <>
