@@ -15,7 +15,7 @@ function PublicLayout({children}) {
           </div>
           <div className="coverPhoto lg:w-[50%] hidden lg:block">
             <img
-              src="public/assets/images/side-img.svg"
+              src="assets/images/side-img.svg"
               alt="side image signin signup"
             />
           </div>

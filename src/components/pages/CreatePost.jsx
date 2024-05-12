@@ -158,7 +158,7 @@ function CreatePost() {
           >
             {loading ? (
               <div className="flex items-center gap-2 w-full justify-center">
-                <img src="public/assets/icons/loader.svg" className="h-5 w-5" />
+                <img src="assets/icons/loader.svg" className="h-5 w-5" />
                 Loading...
               </div>
             ) : (
