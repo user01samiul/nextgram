@@ -36,7 +36,7 @@ function SignIn() {
       <div className="flex items-center gap-1 mb-28 text-2xl">
         <img
           className="h-[40px] w-[40px]"
-          src="public/nextgram.png"
+          src="nextgram.png"
           alt="nextgram"
         />
         <h1>NextGram</h1>
@@ -75,7 +75,7 @@ function SignIn() {
           >
             {loading ? (
               <div className="flex items-center gap-2">
-                <img src="public/assets/icons/loader.svg" className="h-5 w-5" />
+                <img src="assets/icons/loader.svg" className="h-5 w-5" />
                 Loading...
               </div>
             ) : (
