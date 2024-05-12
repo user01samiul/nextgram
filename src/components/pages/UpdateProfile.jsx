@@ -60,6 +60,7 @@ function UpdateProfile() {
     const updatedProfile = await updateProfileAPI(user.$id, updatedObject);
     setLoading(false);
     navigate("/");
+    window.location.reload(); 
   }
   return (
     <section className="flex-1 h-screeen p-4">

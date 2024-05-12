@@ -67,6 +67,7 @@ function CreatePost() {
     }
     setLoading(false);
     navigate("/");
+    window.location.reload(); 
   };
   return (
     <div className="post-container  py-8 md:px-8 px-3 flex-1 h-screen overflow-y-scroll">
