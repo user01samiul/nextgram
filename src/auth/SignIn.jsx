@@ -36,7 +36,7 @@ function SignIn() {
       <div className="flex items-center gap-1 mb-28 text-2xl">
         <img
           className="h-[40px] w-[40px]"
-          src="public/nextgram.png"
+          src="/public/nextgram.png"
           alt="nextgram"
         />
         <h1>NextGram</h1>
