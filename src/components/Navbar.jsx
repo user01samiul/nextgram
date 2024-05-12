@@ -1,5 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
 
 function Navbar() {
@@ -10,16 +11,21 @@ function Navbar() {
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
+  console.log(showInfo);
 
   return (
     <nav className="md:hidden flex  w-full h-[53px] sticky bg-[#131313] z-50 top-0">
-      <div className="  flex items-center mr-auto">
-        <img
-          src="nextgram.png"
-          className="cursor-pointer h-10 w-10"
-          alt="nextgram"
-        />
-        <span className="text-base cursor-pointer">NextGram</span>
+      <div className=" flex items-center mr-auto">
+        <Link to="/">
+          <img
+            src="nextgram.png"
+            className="cursor-pointer h-10 w-10"
+            alt="nextgram"
+          />
+        </Link>
+        <Link to="/">
+          <span className="text-base cursor-pointer">NextGram</span>
+        </Link>
       </div>
       <div className="other_tabs flex items-center gap-4 px-2">
         <div className="logout cursor-pointer active:scale-[0.99]">
@@ -48,6 +54,7 @@ function Navbar() {
           name={name}
           imageURL={imageURL}
           showInfo={showInfo}
+          handleShowInfo={handleShowInfo}
           isOnline={isOnline}
         />
       </div>

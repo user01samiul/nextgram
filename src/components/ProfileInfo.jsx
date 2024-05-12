@@ -1,8 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-function ProfileInfo({ name, imageURL, showInfo, isOnline }) {
+function ProfileInfo({ name, imageURL, showInfo, isOnline, handleShowInfo }) {
   const { signoutApi } = useAuth();
+
   return (
     <>
       <AnimatePresence>
@@ -31,7 +32,10 @@ function ProfileInfo({ name, imageURL, showInfo, isOnline }) {
             </div>
             <ul className=" text-lg mt-3 w-[95%]  ">
               <Link to="/profile">
-                <li className="hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 ">
+                <li
+                  className="hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 "
+                  onClick={handleShowInfo}
+                >
                   Profile
                 </li>
               </Link>
