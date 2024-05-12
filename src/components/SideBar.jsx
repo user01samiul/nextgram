@@ -36,7 +36,7 @@ function SideBar() {
       <div className="logo flex justify-center items-center">
         <img src="/nextgram.png" className="h-[63px] w-[63px]" alt="nextgram" />
       </div>
-      <NavLink to="/profile">
+      <NavLink to="profile">
         <div className="profile-sidebar  flex w-100% items-center ml-[7%] gap-4 cursor-pointer  py-5 rounded-md">
           <div className="dp">
             <img
