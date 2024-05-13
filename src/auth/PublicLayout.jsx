@@ -8,7 +8,7 @@ function PublicLayout({children}) {
       {user ? (
         <Navigate to="/" />
       ) : (
-        <section className=" w-full h-[915px] flex flex-row overflow-hidden">
+        <section className=" w-full h-screen flex flex-row overflow-hidden">
           <div className=" formSection w-full lg:w-[50%] h-full flex items-center">
             {/* <Outlet /> */}
             {children}
