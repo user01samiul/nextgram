@@ -1,16 +1,31 @@
+import React, { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-function PublicLayout({children}) {
+function PublicLayout({ children }) {
   const { user } = useAuth();
+
+  useEffect(() => {
+    function setVhProperty() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    window.addEventListener('resize', setVhProperty);
+    setVhProperty(); // Initial call
+
+    return () => {
+      window.removeEventListener('resize', setVhProperty);
+    };
+  }, []);
+
   return (
     <>
       {user ? (
         <Navigate to="/" />
       ) : (
-        <section className=" w-full publicLayout flex flex-row overflow-hidden">
-          <div className=" formSection w-full lg:w-[50%] h-full flex items-center">
-            {/* <Outlet /> */}
+        <section className="w-full flex flex-row overflow-hidden">
+          <div className="formSection w-full lg:w-[50%] h-full flex items-center">
             {children}
           </div>
           <div className="coverPhoto lg:w-[50%] hidden lg:block">

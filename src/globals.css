@@ -10,10 +10,14 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: hidden;
+}
+:root {
+  --vh: 100vh;
 }
 
 .publicLayout {
-  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 @layer base {
