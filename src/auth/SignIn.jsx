@@ -1,7 +1,7 @@
 import InputField from "@/components/InputField";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
@@ -12,6 +12,26 @@ function SignIn() {
     email: "",
     password: "",
   });
+
+  //viewport
+  useEffect(() => {
+    const handleResize = () => {
+      document.documentElement.style.setProperty(
+        "--vh",
+        `${window.innerHeight * 0.01}px`
+      );
+    };
+
+    handleResize(); // Set initial value
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  //------
 
   function handleChange(e) {
     setValues((prev) => {
@@ -34,11 +54,7 @@ function SignIn() {
   return (
     <div className="flex flex-col justify-center items-center my-auto w-full formFrame">
       <div className="flex items-center gap-1 mb-28 text-2xl">
-        <img
-          className="h-[40px] w-[40px]"
-          src="nextgram.png"
-          alt="nextgram"
-        />
+        <img className="h-[40px] w-[40px]" src="nextgram.png" alt="nextgram" />
         <h1>NextGram</h1>
       </div>
       <h2 className="text-lg">Sign in</h2>
