@@ -12,6 +12,10 @@ body {
   box-sizing: border-box;
 }
 
+.publicLayout {
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 @layer base {
   * {
     @apply box-border list-none p-0 m-0 scroll-smooth;
