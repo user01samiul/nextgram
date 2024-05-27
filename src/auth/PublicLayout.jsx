@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 function PublicLayout({ children }) {
@@ -8,14 +8,14 @@ function PublicLayout({ children }) {
   useEffect(() => {
     function setVhProperty() {
       let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }
 
-    window.addEventListener('resize', setVhProperty);
+    window.addEventListener("resize", setVhProperty);
     setVhProperty(); // Initial call
 
     return () => {
-      window.removeEventListener('resize', setVhProperty);
+      window.removeEventListener("resize", setVhProperty);
     };
   }, []);
 
@@ -24,7 +24,7 @@ function PublicLayout({ children }) {
       {user ? (
         <Navigate to="/" />
       ) : (
-        <section className="w-full flex flex-row overflow-hidden">
+        <section className="publicLayout w-full flex flex-row overflow-hidden">
           <div className="formSection w-full lg:w-[50%] h-full flex items-center">
             {children}
           </div>
