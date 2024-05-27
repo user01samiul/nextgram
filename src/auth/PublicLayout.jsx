@@ -1,26 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-function PublicLayout({ children }) {
+function PublicLayout({children}) {
   const { user } = useAuth();
-
-  useEffect(() => {
-    const handleResize = () => {
-      document.documentElement.style.setProperty(
-        "--vh",
-        `${window.innerHeight * 0.01}px`
-      );
-    };
-
-    handleResize(); // Set initial value
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
   return (
     <>
       {user ? (
