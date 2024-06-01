@@ -18,7 +18,7 @@ body {
 
 .publicLayout,
 .private-layout {
-  height: 100svh;
+  height: 100dvh;
 }
 
 @layer base {
