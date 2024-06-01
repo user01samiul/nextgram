@@ -1,5 +1,4 @@
 import { account, appwriteConfig, databases } from "@/lib/appwrite/config";
-import getPosts from "@/lib/getPosts";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext();
@@ -11,7 +10,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true); // Set loading initially to true
   const [error, setError] = useState(false);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [user, setUser] = useState(null);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
   //mandatory = navigator.onLine
@@ -36,26 +35,26 @@ export function AuthProvider({ children }) {
       }
     };
 
-    const posts = async () => {
-      const posts = await getPosts();
-      setPosts((prev) => {
-        return [...prev, ...posts?.documents];
-      });
-    };
+    // const posts = async () => {
+
+    //   const posts = await getPosts();
+    //   setPosts((prev) => {
+    //     return [...prev, ...posts?.documents];
+    //   });
+
+    // };
 
     fetchUserData();
-    posts();
+    // posts();
 
     // Clean-up function for useEffect
     return () => {
       fetchUserData();
-      posts();
     };
   }, []);
 
   //signin
   async function singinApi(values) {
-
     try {
       const signedinUser = await account.createEmailPasswordSession(
         values.email,
@@ -94,7 +93,7 @@ export function AuthProvider({ children }) {
     signoutApi,
     isOnline,
     setIsOnline,
-    posts,
+    // posts,
   };
   return (
     <AuthContext.Provider value={value}>

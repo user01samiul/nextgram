@@ -1,4 +1,5 @@
 import { Toaster } from "@/components/ui/toaster.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ReactDOM from "react-dom/client";
 import {
   Route,
@@ -21,6 +22,8 @@ import UpdateProfile from "./components/pages/UpdateProfile.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "./globals.css";
 import "./lib/firebase/firebase.js";
+
+const queryClient = new QueryClient({});
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -67,7 +70,9 @@ const router = createBrowserRouter(
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <AuthProvider>
-    <RouterProvider router={router} /> {/*receives router props*/}
-    <Toaster />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} /> {/*receives router props*/}
+      <Toaster />
+    </QueryClientProvider>
   </AuthProvider>
 );

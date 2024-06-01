@@ -1,18 +1,73 @@
+// import giveLike from "@/lib/firebase/giveLike";
+import { useAuth } from "@/contexts/AuthContext";
+import giveLike from "@/lib/giveLike";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
 
-function PostCard({ post }) {
+function PostCard({ post, isFetching }) {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
-
-  const user = post.creator;
-  const dp = user.imageURL;
+  const creator = post.creator;
+  const dp = creator.imageURL;
   const [isLiked, setisLiked] = useState(false);
   const [isSaved, setisSaved] = useState(false);
   const timestamp = post.$createdAt;
   const [time, setTime] = useState(formatTimestamp(timestamp));
+  const [likesArray, setLikesArray] = useState();
+  const queryClient = useQueryClient();
 
+  const { mutate, error, isPending } = useMutation({
+    mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
+    onSuccess: (data) => {
+      console.log("success");
+    },
+  });
+
+  const handleLikes = (likeStatus) => {
+    if (likeStatus) {
+      console.log(likesArray);
+      const copiedArray = [...likesArray];
+      if (!copiedArray.includes(user.$id)) {
+        copiedArray.push(user.$id);
+      }
+      setLikesArray(copiedArray);
+      const updatedPost = {
+        ...post,
+        likes: copiedArray,
+      };
+      mutate(updatedPost);
+    } else {
+      const copiedArray = [...likesArray];
+      const updatedLikesArray = copiedArray.filter(
+        (value) => value !== user.$id
+      );
+      setLikesArray(updatedLikesArray);
+
+      const updatedPost = {
+        ...post,
+        likes: updatedLikesArray.length === 0 ? [] : updatedLikesArray,
+      };
+
+      mutate(updatedPost);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      user.liked.some((value) => {
+        return value.$id === post.$id;
+      })
+    ) {
+      setisLiked(true);
+    } else {
+      setisLiked(false);
+    }
+  }, [post.$id, user.liked]);
+
+  // console.log(post)
   function formatTimestamp(timestamp) {
     const now = new Date();
     const targetDate = new Date(timestamp);
@@ -48,6 +103,14 @@ function PostCard({ post }) {
   }
 
   useEffect(() => {
+    const arr = [];
+    const update = post?.likes.forEach((value) => {
+      return arr.push(value.$id);
+    });
+    setLikesArray(arr);
+  }, [post?.likes]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setTime(formatTimestamp(timestamp));
     }, 1000);
@@ -56,7 +119,6 @@ function PostCard({ post }) {
       clearInterval(interval);
     };
   }, []);
-
 
 
   return (
@@ -72,7 +134,7 @@ function PostCard({ post }) {
               />
               <div>
                 <div className="flex flex-col">
-                  <span className="text-lg">{user.name}</span>
+                  <span className="text-lg">{creator.name}</span>
                   <span className="text-sm text-off-white opacity-60">
                     {time}
                   </span>
@@ -95,21 +157,30 @@ function PostCard({ post }) {
               </div>
             </div>
             <div className="reaction flex justify-between pt-5">
-              <svg
-                onClick={() => setisLiked((prev) => !prev)}
-                xmlns="http://www.w3.org/2000/svg"
-                fill={`${isLiked ? "#fb046e" : "none"}`}
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke={`${isLiked ? "#fb046e" : "currentColor"}`}
-                className="w-6 h-6 cursor-pointer active:scale-[0.94]"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
-                />
-              </svg>
+              <div className="like-button flex gap-[2px]">
+                <svg
+                  onClick={() => {
+                    setisLiked((prev) => {
+                      const reversed = !prev;
+                      handleLikes(reversed);
+                      return reversed;
+                    });
+                  }}
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill={`${isLiked ? "#fb046e" : "none"}`}
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke={`${isLiked ? "#fb046e" : "currentColor"}`}
+                  className="w-6 h-6 cursor-pointer active:scale-[0.94]"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"
+                  />
+                </svg>
+                <span>{likesArray?.length}</span>
+              </div>
               <svg
                 onClick={() => setisSaved((prev) => !prev)}
                 xmlns="http://www.w3.org/2000/svg"
