@@ -12,6 +12,7 @@ function Home() {
     queryFn: () => {
       return getPosts();
     },
+    refetchOnWindowFocus: false,
   });
 
   const postCards = posts?.documents.map((post, index) => {
