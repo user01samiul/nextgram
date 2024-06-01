@@ -40,7 +40,7 @@ function SideBar() {
         <div className="profile-sidebar  flex w-100% items-center ml-[7%] gap-4 cursor-pointer  py-5 rounded-md">
           <div className="dp">
             <img
-              className=" md:h-[40px] md:w-[40px] rounded-full object-contain lg:h-[45px] lg:w-[45px]"
+              className=" md:h-[40px] md:w-[40px] rounded-full object-cover lg:h-[45px] lg:w-[45px]"
               src={user.imageURL}
               alt={user.name}
             />
