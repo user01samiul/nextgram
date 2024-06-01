@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html{
-  height: -webkit-fill-available;
-}
-
 html,
 body {
   height: 100%;
@@ -15,7 +11,6 @@ body {
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
-  height: -webkit-fill-available;
 }
 :root {
   --vh: 100vh;
@@ -23,7 +18,8 @@ body {
 
 .publicLayout,
 .private-layout {
-  height: -webkit-fill-available;
+  height: 100vh; /* Fallback for browsers that do not support Custom Properties */
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 @layer base {
