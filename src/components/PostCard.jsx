@@ -21,8 +21,8 @@ function PostCard({ post, isFetching }) {
 
   const { mutate, error, isPending } = useMutation({
     mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
-    onSuccess: (data) => {
-      console.log("success");
+    onSuccess: () => {
+      queryClient.invalidateQueries(["post", post.$id]);
     },
   });
 
@@ -119,7 +119,6 @@ function PostCard({ post, isFetching }) {
       clearInterval(interval);
     };
   }, []);
-
 
   return (
     <>

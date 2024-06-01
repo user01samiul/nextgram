@@ -8,7 +8,7 @@ function Home() {
   const { user } = useAuth();
 
   const { data: posts, isFetching } = useQuery({
-    queryKey: ["todo"],
+    queryKey: ["posts"],
     queryFn: () => {
       return getPosts();
     },
