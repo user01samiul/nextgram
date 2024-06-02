@@ -22,6 +22,7 @@ function Home() {
     return <PostCard key={index} post={post} isFetching={isFetching} />;
   });
 
+  
   if (posts === undefined)
     return (
       <div className="flex-1 flex justify-center items-center">

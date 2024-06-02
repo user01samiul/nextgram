@@ -1,35 +1,36 @@
 // import giveLike from "@/lib/firebase/giveLike";
-import { useAuth } from "@/contexts/AuthContext";
 import giveLike from "@/lib/giveLike";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
+import { useAuth } from "@/contexts/AuthContext";
 
-function PostCard({ post }) {
-  const { user } = useAuth();
+function ProfilePostCard({ post, user }) {
+
   const [loading, setLoading] = useState(true);
-  const creator = post.creator;
-  const dp = creator?.imageURL;
+  const creator = user?.name;
+  const dp = user?.imageURL;
   const [isLiked, setisLiked] = useState(false);
   const [isSaved, setisSaved] = useState(false);
-  const timestamp = post.$createdAt;
+  const timestamp = post?.$createdAt;
   const [time, setTime] = useState(formatTimestamp(timestamp));
   const [likesArray, setLikesArray] = useState();
   const queryClient = useQueryClient();
 
+  console.log(post )
+
+
+
   const { mutate, error, isPending } = useMutation({
     mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
-    onSuccess: () => {
-      console.log("success")
-      // queryClient.invalidateQueries(["post", post.$id]);
-    },
   });
+
 
   const handleLikes = (likeStatus) => {
     if (likeStatus) {
-      console.log(likesArray);
+  
       const copiedArray = [...likesArray];
       if (!copiedArray.includes(user.$id)) {
         copiedArray.push(user.$id);
@@ -68,7 +69,7 @@ function PostCard({ post }) {
     }
   }, [post.$id, user.liked]);
 
-  // console.log(post)
+
   function formatTimestamp(timestamp) {
     const now = new Date();
     const targetDate = new Date(timestamp);
@@ -121,8 +122,6 @@ function PostCard({ post }) {
     };
   }, []);
 
-
-
   return (
     <>
       <SkeletonTheme baseColor="#202020" highlightColor="#444">
@@ -136,7 +135,7 @@ function PostCard({ post }) {
               />
               <div>
                 <div className="flex flex-col">
-                  <span className="text-lg">{creator?.name}</span>
+                  <span className="text-lg">{creator.name}</span>
                   <span className="text-sm text-off-white opacity-60">
                     {time}
                   </span>
@@ -144,12 +143,12 @@ function PostCard({ post }) {
               </div>
             </div>
             <div className="caption flex-1">
-              <span>{post.caption}</span>
+              <span>{post?.caption}</span>
               <div className="captionPhoto w-full h-[full] overflow-hidden">
-                {post.imageUrl ? (
+                {post?.imageUrl ? (
                   <img
                     onLoad={() => setLoading(false)}
-                    src={post.imageUrl}
+                    src={post?.imageUrl}
                     alt=""
                     className="w-full  h-full object-cover mt-2 rounded-lg"
                   />
@@ -208,4 +207,4 @@ function PostCard({ post }) {
   );
 }
 
-export default PostCard;
+export default ProfilePostCard;

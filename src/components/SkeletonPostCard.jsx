@@ -37,10 +37,10 @@ function SkeletonPostCard({ post, setLoading, dp }) {
             <Skeleton count={2} />
           </span>
           <div className="captionPhoto w-full h-[full] overflow-hidden">
-            {post.imageUrl ? (
+            {post?.imageUrl ? (
               <img
                 onLoad={() => setLoading(false)}
-                src={post.imageUrl}
+                src={post?.imageUrl}
                 alt=""
                 className="w-full hidden  h-full object-cover mt-2 rounded-lg"
               />
