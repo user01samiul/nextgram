@@ -19,7 +19,7 @@ function ProfilePostCard({ post, user }) {
   const [likesArray, setLikesArray] = useState();
   const queryClient = useQueryClient();
 
-  console.log(post )
+  // console.log(post )
 
 
 
