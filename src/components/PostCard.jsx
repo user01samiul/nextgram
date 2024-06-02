@@ -22,7 +22,8 @@ function PostCard({ post, isFetching }) {
   const { mutate, error, isPending } = useMutation({
     mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
     onSuccess: () => {
-      queryClient.invalidateQueries(["post", post.$id]);
+      console.log("success")
+      // queryClient.invalidateQueries(["post", post.$id]);
     },
   });
 

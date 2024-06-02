@@ -13,21 +13,21 @@ function Home() {
       return getPosts();
     },
     refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    cacheTime: 10 * 60 * 1000, // 10 minutes
+    keepPreviousData: true, // //while fetching new data
   });
 
   const postCards = posts?.documents.map((post, index) => {
     return <PostCard key={index} post={post} isFetching={isFetching} />;
   });
 
-  if (isFetching) {
+  if (posts === undefined)
     return (
-      <div className="flex-1 h-full flex gap-2 justify-center items-center">
+      <div className="flex-1 flex justify-center items-center">
         <img src="assets/icons/loader.svg" className="h-8 w-8" />
-        <p className="text-sm">Loading content...</p>
       </div>
     );
-  }
-  // console.log(posts?.documents[0])
 
   return (
     <section className="flex-1 overflow-y-scroll h-screen flex flex-col items-center">
