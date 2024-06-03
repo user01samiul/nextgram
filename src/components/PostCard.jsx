@@ -109,6 +109,9 @@ function PostCard({ post }) {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
+      });
     },
   });
 
@@ -119,6 +122,9 @@ function PostCard({ post }) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
       });
     },
   });

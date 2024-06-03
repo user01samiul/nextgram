@@ -8,8 +8,8 @@ function SavePosts() {
 
   const { data: posts, isFetching } = useQuery({
     queryKey: ["saves", user.$id],
-    queryFn: () => {
-      return getPosts();
+    queryFn: async () => {
+      return await getPosts();
     },
     refetchOnWindowFocus: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -17,22 +17,27 @@ function SavePosts() {
     keepPreviousData: true, // //while fetching new data
   });
 
-  if (isFetching)
+  const draft = posts?.documents;
+  const result = draft?.filter((object) => {
+    return object.save.some((object) => {
+      return object.users.$id === user.$id;
+    });
+  });
+
+  if (posts === undefined)
     return (
       <div className=" mt-14">
         <img src="assets/icons/loader.svg" className="h-8 w-8" />
       </div>
     );
 
-    const postCards = posts?.documents.map((post, index) => {
-      return <SavedPostCard key={index} post={post} isFetching={isFetching} />;
-    });
+  const postCards = result?.map((post) => {
+    return (
+      <SavedPostCard key={Math.random()} post={post} isFetching={isFetching} />
+    );
+  });
 
-
-  return (
-    <div className="mt-4 w-full flex flex-col items-center">{postCards}</div>
-  );
-  // return <div>as</div>;
+  return <div className=" w-full flex flex-col items-center">{postCards}</div>;
 }
 
 export default SavePosts;

@@ -10,7 +10,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
 
-function SavedPostCard({ post }) {
+function PostCard({ post }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const creator = post.creator;
@@ -20,6 +20,7 @@ function SavedPostCard({ post }) {
   const [time, setTime] = useState(formatTimestamp(timestamp));
   const [likesArray, setLikesArray] = useState();
   const [isSaved, setisSaved] = useState(false);
+
 
   const queryClient = useQueryClient();
 
@@ -109,6 +110,9 @@ function SavedPostCard({ post }) {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
+      });
     },
   });
 
@@ -120,8 +124,13 @@ function SavedPostCard({ post }) {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
+      });
     },
   });
+
+
 
   async function handleSaveClick() {
     const documentToDelete = user2?.save.find((value) => {
@@ -129,14 +138,17 @@ function SavedPostCard({ post }) {
     });
 
     if (documentToDelete?.post.$id !== post.$id) {
-      const saved = await mutateSave({ userId: user.$id, postId: post.$id });
       setisSaved(true);
+      const saved = await mutateSave({ userId: user.$id, postId: post.$id });
     } else {
-      const deleted = await deletedSave(documentToDelete.$id);
       setisSaved(false);
+      const deleted = await deletedSave(documentToDelete.$id);
     }
   }
 
+
+  
+  //effect 1
   let status;
   if (
     post.save.some((object) => {
@@ -150,17 +162,9 @@ function SavedPostCard({ post }) {
     status = false;
   }
 
-  //   useEffect(() => {
-  //     const document = user?.save.find((value) => {
-  //       return value.post.$id === post.$id;
-  //     });
-  //     if (document?.post.$id === post.$id) {
-  //       setisSaved(true);
-  //     } else {
-  //       setisSaved(false);
-  //     }
-  //   }, []);
+
   useEffect(() => {
+    //effect 2
     const document = user2?.save.find((value) => {
       return value.post.$id === post.$id;
     });
@@ -170,6 +174,8 @@ function SavedPostCard({ post }) {
       setisSaved(false);
     }
   }, [user2?.save]);
+
+  //end
 
   //time -----------------------------------
 
@@ -286,10 +292,10 @@ function SavedPostCard({ post }) {
                   })
                 }
                 xmlns="http://www.w3.org/2000/svg"
-                fill={`${isSaved ? "#5294df" : "none"}`}
+                fill={`${isSaved || status ? "#5294df" : "none"}`}
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke={`${isSaved ? "#5294df" : "currentColor"}`}
+                stroke={`${isSaved || status ? "#5294df" : "currentColor"}`}
                 className="w-6 h-6 cursor-pointer active:scale-[0.94]"
               >
                 <path
@@ -308,4 +314,4 @@ function SavedPostCard({ post }) {
   );
 }
 
-export default SavedPostCard;
+export default PostCard;
