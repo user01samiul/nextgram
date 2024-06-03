@@ -24,9 +24,9 @@ function SavePosts() {
     });
   });
 
-  if (posts === undefined)
+  if (posts === undefined || posts === [] || isFetching)
     return (
-      <div className=" mt-14">
+      <div className=" flex-1 flex justify-center items-center">
         <img src="assets/icons/loader.svg" className="h-8 w-8" />
       </div>
     );
