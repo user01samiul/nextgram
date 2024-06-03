@@ -9,10 +9,10 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
 
-function ProfilePostCard({ post, user }) {
+function ProfilePostCard({ post, user,data }) {
   const [loading, setLoading] = useState(true);
-  const creator = user?.name;
-  const dp = user?.imageURL;
+  const creator = data.name;
+  const dp = data.imageURL;
   const [isLiked, setisLiked] = useState(false);
   const [isSaved, setisSaved] = useState(false);
   const timestamp = post?.$createdAt;
@@ -112,16 +112,31 @@ function ProfilePostCard({ post, user }) {
     }
   }
 
-  useEffect(() => {
-    const document = user?.save.find((value) => {
-      return value.post.$id === post.$id;
-    });
-    if (document?.post.$id === post.$id) {
-      setisSaved(true);
-    } else {
-      setisSaved(false);
-    }
-  }, []);
+
+  let status;
+  if (
+    post.save.some((object) => {
+      return object.users.$id === user.$id;
+    })
+  ) {
+    // setisSaved(true);
+    status = true;
+  } else {
+    // setisSaved(false);
+    status = false;
+  }
+
+
+  // useEffect(() => {
+  //   const document = user?.save.find((value) => {
+  //     return value.post.$id === post.$id;
+  //   });
+  //   if (document?.post.$id === post.$id) {
+  //     setisSaved(true);
+  //   } else {
+  //     setisSaved(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
     const document = user2?.save.find((value) => {
@@ -201,7 +216,7 @@ function ProfilePostCard({ post, user }) {
               />
               <div>
                 <div className="flex flex-col">
-                  <span className="text-lg">{creator.name}</span>
+                  <span className="text-lg">{creator}</span>
                   <span className="text-sm text-off-white opacity-60">
                     {time}
                   </span>

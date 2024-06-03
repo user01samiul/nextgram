@@ -18,6 +18,8 @@ function Home() {
     keepPreviousData: true, // //while fetching new data
   });
 
+  
+
   const postCards = posts?.documents.map((post, index) => {
     return <PostCard key={index} post={post} isFetching={isFetching} />;
   });

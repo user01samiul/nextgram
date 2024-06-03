@@ -32,15 +32,21 @@ function People() {
     </div>
   ));
 
-  if (data === undefined) 
+  if (data === undefined)
     return (
       <div className="flex-1 flex justify-center items-center">
-
         <img src="assets/icons/loader.svg" className="h-8 w-8" />
       </div>
     );
 
-  return <div className="bottomSection flex-1  p-4  ">{print}</div>;
+  return (
+    <div className="flex-1">
+      <div className="people-heading text-center w-full flex justify-center items-center lg:my-4 my-2 text-xl">
+        Discover People
+      </div>
+      <div className="bottomSection flex-1  px-4   ">{print}</div>
+    </div>
+  );
 }
 
 export default People;

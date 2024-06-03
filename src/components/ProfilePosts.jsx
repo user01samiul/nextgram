@@ -27,7 +27,7 @@ function ProfilePosts() {
   const posts = copiedArr?.reverse();
 
   const postCards = posts?.map((post, index) => {
-    return <ProfilePostCard key={index} post={post} user={user} />;
+    return <ProfilePostCard key={index} post={post} user={user} data={data} />;
   });
 
   return (

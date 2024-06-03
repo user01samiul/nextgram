@@ -10,7 +10,7 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
 
-function PostCard({ post }) {
+function SavedPostCard({ post }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const creator = post.creator;
@@ -137,8 +137,6 @@ function PostCard({ post }) {
     }
   }
 
-
-  //effect 1
   let status;
   if (
     post.save.some((object) => {
@@ -152,23 +150,17 @@ function PostCard({ post }) {
     status = false;
   }
 
-
-  // useEffect(() => {
-  //   //effect 1
-  //   const document = user?.save.find((value) => {
-  //     return value.post.$id === post.$id;
-  //   });
-  //   if (document?.post.$id === post.$id) {
-  //     setisSaved(true);
-  //     console.log("ran");
-  //   } else {
-  //     setisSaved(false);
-  //   }
-  // }, []);
-  // console.log(post);
-
+  //   useEffect(() => {
+  //     const document = user?.save.find((value) => {
+  //       return value.post.$id === post.$id;
+  //     });
+  //     if (document?.post.$id === post.$id) {
+  //       setisSaved(true);
+  //     } else {
+  //       setisSaved(false);
+  //     }
+  //   }, []);
   useEffect(() => {
-    //effect 2
     const document = user2?.save.find((value) => {
       return value.post.$id === post.$id;
     });
@@ -178,8 +170,6 @@ function PostCard({ post }) {
       setisSaved(false);
     }
   }, [user2?.save]);
-
-  //end
 
   //time -----------------------------------
 
@@ -296,10 +286,10 @@ function PostCard({ post }) {
                   })
                 }
                 xmlns="http://www.w3.org/2000/svg"
-                fill={`${isSaved || status ? "#5294df" : "none"}`}
+                fill={`${isSaved ? "#5294df" : "none"}`}
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
-                stroke={`${isSaved || status ? "#5294df" : "currentColor"}`}
+                stroke={`${isSaved ? "#5294df" : "currentColor"}`}
                 className="w-6 h-6 cursor-pointer active:scale-[0.94]"
               >
                 <path
@@ -318,4 +308,4 @@ function PostCard({ post }) {
   );
 }
 
-export default PostCard;
+export default SavedPostCard;
