@@ -1,7 +1,10 @@
 // import giveLike from "@/lib/firebase/giveLike";
 import { useAuth } from "@/contexts/AuthContext";
+import currentUser from "@/lib/currentUser";
+import deleteSave from "@/lib/deleteSave";
 import giveLike from "@/lib/giveLike";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import savePost from "@/lib/savePost";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -13,23 +16,23 @@ function PostCard({ post }) {
   const creator = post.creator;
   const dp = creator?.imageURL;
   const [isLiked, setisLiked] = useState(false);
-  const [isSaved, setisSaved] = useState(false);
   const timestamp = post.$createdAt;
   const [time, setTime] = useState(formatTimestamp(timestamp));
   const [likesArray, setLikesArray] = useState();
+  const [isSaved, setisSaved] = useState(false);
+
   const queryClient = useQueryClient();
 
-  const { mutate, error, isPending } = useMutation({
-    mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
-    onSuccess: () => {
-      console.log("success")
-      // queryClient.invalidateQueries(["post", post.$id]);
+  //like functionality ------------------------
+
+  const { mutate } = useMutation({
+    mutationFn: (updatedPost) => {
+      return giveLike(post.$id, updatedPost);
     },
   });
 
   const handleLikes = (likeStatus) => {
     if (likeStatus) {
-      console.log(likesArray);
       const copiedArray = [...likesArray];
       if (!copiedArray.includes(user.$id)) {
         copiedArray.push(user.$id);
@@ -66,9 +69,86 @@ function PostCard({ post }) {
     } else {
       setisLiked(false);
     }
-  }, [post.$id, user.liked]);
 
-  // console.log(post)
+    if (
+      user.save.some((value) => {
+        return value.$id === post.$id;
+      })
+    ) {
+      setisSaved(true);
+    } else {
+      setisSaved(false);
+    }
+  }, [post.$id, user.liked, user.save]);
+
+  useEffect(() => {
+    const arr = [];
+    const update = post?.likes.forEach((value) => {
+      return arr.push(value.$id);
+    });
+    setLikesArray(arr);
+  }, [post?.likes]);
+
+  //save functionality --------------------------------
+
+  const { data: user2 } = useQuery({
+    //for using in saves (updated)
+    queryKey: ["user2", user.$id],
+    queryFn: async () => {
+      return await currentUser();
+    },
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+  });
+
+  const { mutate: mutateSave } = useMutation({
+    mutationFn: async ({ userId, postId }) => {
+      return await savePost(userId, postId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user2", user.$id],
+      });
+    },
+  });
+
+  const { mutate: deletedSave } = useMutation({
+    mutationFn: async (documentId) => {
+      return await deleteSave(documentId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user2", user.$id],
+      });
+    },
+  });
+
+  async function handleSaveClick() {
+    const documentToDelete = user2?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+
+    if (documentToDelete?.post.$id !== post.$id) {
+      const saved = await mutateSave({ userId: user.$id, postId: post.$id });
+      setisSaved(true);
+    } else {
+      const deleted = await deletedSave(documentToDelete.$id);
+      setisSaved(false);
+    }
+  }
+  useEffect(() => {
+    const document = user?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+    if (document?.post.$id === post.$id) {
+      setisSaved(true);
+    } else {
+      setisSaved(false);
+    }
+  }, [post.$id, user?.save]);
+
+  //time -----------------------------------
+
   function formatTimestamp(timestamp) {
     const now = new Date();
     const targetDate = new Date(timestamp);
@@ -104,14 +184,6 @@ function PostCard({ post }) {
   }
 
   useEffect(() => {
-    const arr = [];
-    const update = post?.likes.forEach((value) => {
-      return arr.push(value.$id);
-    });
-    setLikesArray(arr);
-  }, [post?.likes]);
-
-  useEffect(() => {
     const interval = setInterval(() => {
       setTime(formatTimestamp(timestamp));
     }, 1000);
@@ -120,8 +192,6 @@ function PostCard({ post }) {
       clearInterval(interval);
     };
   }, []);
-
-
 
   return (
     <>
@@ -184,7 +254,13 @@ function PostCard({ post }) {
                 <span>{likesArray?.length}</span>
               </div>
               <svg
-                onClick={() => setisSaved((prev) => !prev)}
+                onClick={() =>
+                  setisSaved((prev) => {
+                    const changed = !prev;
+                    handleSaveClick(changed);
+                    return changed;
+                  })
+                }
                 xmlns="http://www.w3.org/2000/svg"
                 fill={`${isSaved ? "#5294df" : "none"}`}
                 viewBox="0 0 24 24"

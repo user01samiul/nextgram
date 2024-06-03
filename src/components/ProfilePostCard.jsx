@@ -1,14 +1,15 @@
 // import giveLike from "@/lib/firebase/giveLike";
+import currentUser from "@/lib/currentUser";
+import deleteSave from "@/lib/deleteSave";
 import giveLike from "@/lib/giveLike";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import savePost from "@/lib/savePost";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
-import { useAuth } from "@/contexts/AuthContext";
 
 function ProfilePostCard({ post, user }) {
-
   const [loading, setLoading] = useState(true);
   const creator = user?.name;
   const dp = user?.imageURL;
@@ -19,18 +20,12 @@ function ProfilePostCard({ post, user }) {
   const [likesArray, setLikesArray] = useState();
   const queryClient = useQueryClient();
 
-  // console.log(post )
-
-
-
   const { mutate, error, isPending } = useMutation({
     mutationFn: (updatedPost) => giveLike(post.$id, updatedPost),
   });
 
-
   const handleLikes = (likeStatus) => {
     if (likeStatus) {
-  
       const copiedArray = [...likesArray];
       if (!copiedArray.includes(user.$id)) {
         copiedArray.push(user.$id);
@@ -69,6 +64,66 @@ function ProfilePostCard({ post, user }) {
     }
   }, [post.$id, user.liked]);
 
+  //save functionality --------------------------------
+
+  const { data: user2 } = useQuery({
+    //for using in saves (updated)
+    queryKey: ["user2", user.$id],
+    queryFn: async () => {
+      return await currentUser();
+    },
+    refetchOnWindowFocus: false,
+    keepPreviousData: true,
+  });
+
+  const { mutate: mutateSave } = useMutation({
+    mutationFn: async ({ userId, postId }) => {
+      return await savePost(userId, postId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user2", user.$id],
+      });
+    },
+  });
+
+  const { mutate: deletedSave } = useMutation({
+    mutationFn: async (documentId) => {
+      return await deleteSave(documentId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["user2", user.$id],
+      })
+      
+    },
+  });
+
+  async function handleSaveClick() {
+    const documentToDelete = user2?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+
+    if (documentToDelete?.post.$id !== post.$id) {
+      const saved = await mutateSave({ userId: user.$id, postId: post.$id });
+      setisSaved(true);
+    } else {
+      const deleted = await deletedSave(documentToDelete.$id);
+      setisSaved(false);
+    }
+  }
+  useEffect(() => {
+    const document = user?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+    if (document?.post.$id === post.$id) {
+      setisSaved(true);
+    } else {
+      setisSaved(false);
+    }
+  }, [post.$id, user?.save]);
+
+  //time -----------------------------------
 
   function formatTimestamp(timestamp) {
     const now = new Date();
@@ -183,7 +238,13 @@ function ProfilePostCard({ post, user }) {
                 <span>{likesArray?.length}</span>
               </div>
               <svg
-                onClick={() => setisSaved((prev) => !prev)}
+                onClick={() =>
+                  setisSaved((prev) => {
+                    const changed = !prev;
+                    handleSaveClick(changed);
+                    return changed;
+                  })
+                }
                 xmlns="http://www.w3.org/2000/svg"
                 fill={`${isSaved ? "#5294df" : "none"}`}
                 viewBox="0 0 24 24"

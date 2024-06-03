@@ -8,7 +8,7 @@ function Home() {
   const { user } = useAuth();
 
   const { data: posts, isFetching } = useQuery({
-    queryKey: ["posts"],
+    queryKey: ["posts", user.$id],
     queryFn: () => {
       return getPosts();
     },
@@ -22,7 +22,6 @@ function Home() {
     return <PostCard key={index} post={post} isFetching={isFetching} />;
   });
 
-  
   if (posts === undefined)
     return (
       <div className="flex-1 flex justify-center items-center">

@@ -11,6 +11,7 @@ export default async function giveLike(documentId, updatedPost) {
             likes : updatedPost.likes
         } // data (optional)
       );
+      return result
  } catch (error) {
     console.log(error);
  }
