@@ -145,7 +145,17 @@ function PostCard({ post }) {
     } else {
       setisSaved(false);
     }
-  }, [post.$id, user?.save]);
+  }, []);
+  useEffect(() => {
+    const document = user2?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+    if (document?.post.$id === post.$id) {
+      setisSaved(true);
+    } else {
+      setisSaved(false);
+    }
+  }, [user2?.save]);
 
   //time -----------------------------------
 

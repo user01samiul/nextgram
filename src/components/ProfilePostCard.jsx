@@ -94,8 +94,7 @@ function ProfilePostCard({ post, user }) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
-      })
-      
+      });
     },
   });
 
@@ -112,6 +111,7 @@ function ProfilePostCard({ post, user }) {
       setisSaved(false);
     }
   }
+
   useEffect(() => {
     const document = user?.save.find((value) => {
       return value.post.$id === post.$id;
@@ -121,7 +121,18 @@ function ProfilePostCard({ post, user }) {
     } else {
       setisSaved(false);
     }
-  }, [post.$id, user?.save]);
+  }, []);
+
+  useEffect(() => {
+    const document = user2?.save.find((value) => {
+      return value.post.$id === post.$id;
+    });
+    if (document?.post.$id === post.$id) {
+      setisSaved(true);
+    } else {
+      setisSaved(false);
+    }
+  }, [user2?.save]);
 
   //time -----------------------------------
 
