@@ -1,11 +1,17 @@
+import Home from "./Home";
+import People from "./People";
+
 function Explore() {
   return (
-    <div className="bottomSection  w-full h-screen">
-      <div className="w-full  h-full flex flex-col justify-center items-center">
-        <img src="gear.png" alt="gear_icon" className="h=[70px] w-[70px] " />
-        <p className="text-sm font-normal mt-1 text-gray-300">
-          This section is under development.
-        </p>
+    <div className="bottomSection  flex-1 h-screen">
+      <div className=" w-full h-[30%]  overflow-y-scroll  border-b border-[#c9c5c525] ">
+        <People />
+      </div>
+      <div className=" w-full h-[75%]   overflow-y-scroll">
+        <div className="people-heading   text-center w-full flex justify-center items-center my-2 text-xl">
+          Discover Posts
+        </div>
+        <Home />
       </div>
     </div>
   );

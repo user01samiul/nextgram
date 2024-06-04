@@ -1,15 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
-import profilePosts from "@/lib/profilePosts";
-import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
-import ProfilePostCard from "../PostCard";
 import ProfilePosts from "../ProfilePosts";
 function Profile() {
   const { user, isOnline } = useAuth();
- 
-
-  
-
   return (
     <section className="flex-1  overflow-y-scroll">
       <div className="userinfo relative">
@@ -46,8 +39,8 @@ function Profile() {
               </p>
             </div>
           </div>
-        </div >
-        <div className="user_details border-b border-[#c9c5c513] flex  flex-1 items-center flex-col pt-36 lg:pt-[175px]">
+        </div>
+        <div className="user_details border-b border-[#c9c5c525] flex  flex-1 items-center flex-col pt-36 lg:pt-[175px]">
           <p className="mb-4">{user.bio}</p>
         </div>
       </div>
