@@ -1,8 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import coverPhotoUpload, {
-  getCoverPhotoURL,
-  updateCoverPhoto,
-} from "@/lib/coverPhoto";
+import coverPhotoUpload, { getCoverPhotoURL } from "@/lib/coverPhoto";
 import getImageURL from "@/lib/getImageURL";
 import updateProfileAPI from "@/lib/updateProfileAPI";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -85,13 +82,14 @@ function UpdateProfile() {
 
     if (!user.coverPhotos?.length === 0) {
       const documentId = user.coverPhotos.$id;
-      console.log(documentId)
+      console.log(documentId);
       // const updatingCoverPhoto = await updateCoverPhoto(
       //   documentId,
       //   coverURL,
       //   user.$id
       // );
-    } {
+    }
+    {
       const creatingCoverDocument = await coverPhotoUpload(user.$id, coverURL);
     }
 
@@ -124,6 +122,8 @@ function UpdateProfile() {
           name="name"
           handleChange={handleChange}
           value={updatedProfileInfo.name}
+          placeholder="Enter your name"
+          required
         />
         <Input
           title="Username"
@@ -131,6 +131,8 @@ function UpdateProfile() {
           name="username"
           handleChange={handleChange}
           value={updatedProfileInfo.username}
+          placeholder="Enter your username"
+          required
         />
         <Input
           title="Thread"
@@ -138,6 +140,8 @@ function UpdateProfile() {
           name="thread"
           handleChange={handleChange}
           value={updatedProfileInfo.thread}
+          placeholder="@user123"
+          required
         />
         <Input
           title="Bio"
@@ -145,6 +149,8 @@ function UpdateProfile() {
           name="bio"
           handleChange={handleChange}
           value={updatedProfileInfo.bio}
+          placeholder="Enter your bio"
+          required
         />
         <EmailShow
           title="Email"
@@ -152,6 +158,8 @@ function UpdateProfile() {
           name="email"
           handleChange={handleChange}
           value={updatedProfileInfo.email}
+          placeholder="Enter your email address"
+          required
         />
         <SelectDp
           name="photoFile"

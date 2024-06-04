@@ -42,7 +42,7 @@ function Input({ title, type, name, handleChange,value, ...rest }) {
               !editable ? "bg-[#313030]" : "bg-[#131313]"
             }`}
             {...rest}
-            placeholder={`Enter ${title}`}
+            
           />
         </label>
         {!editable ? (
