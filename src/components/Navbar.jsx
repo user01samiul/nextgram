@@ -1,4 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
+import currentUser from "@/lib/currentUser";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
@@ -6,18 +8,23 @@ import ProfileInfo from "./ProfileInfo";
 function Navbar() {
   const { user, signoutApi, isOnline } = useAuth();
   const [showInfo, setShowInfo] = useState(false);
-  const { imageURL, name } = user;
+  const { data: user2 } = useQuery({
+    queryKey: ["userMainMobile", user?.$id],
+    queryFn: async () => {
+      return await currentUser(user.$id);
+    },
+  });
 
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
-  
+
   return (
-    <nav className="md:hidden flex  w-full h-[53px] sticky bg-[#131313] z-50 top-0">
+    <nav className="md:hidden flex  w-full h-[60px] sticky bg-[#131313] z-50 top-0">
       <div className=" flex items-center mr-auto">
         <Link to="/">
           <img
-            src="nextgram.png"
+            src="/nextgram.png"
             className="cursor-pointer h-10 w-10"
             alt="nextgram"
           />
@@ -49,13 +56,16 @@ function Navbar() {
           />
         </div>
 
-        <ProfileInfo
-          name={name}
-          imageURL={imageURL}
-          showInfo={showInfo}
-          handleShowInfo={handleShowInfo}
-          isOnline={isOnline}
-        />
+        {!showInfo ? (
+          ""
+        ) : (
+          <ProfileInfo
+            user2={user2}
+            showInfo={showInfo}
+            handleShowInfo={handleShowInfo}
+            isOnline={isOnline}
+          />
+        )}
       </div>
     </nav>
   );

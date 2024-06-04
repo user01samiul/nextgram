@@ -1,7 +1,7 @@
-function SelectDp({ name, handleChange, value }) {
+function SelectDp({ name, handleChange, title }) {
   return (
     <label htmlFor="dp" className="flex flex-col w-full">
-      <span className="mb-1">Select profile picture</span>
+      <span className="mb-1">{title}</span>
       <input
         // value={value} // don't need for type="file"
         type="file"

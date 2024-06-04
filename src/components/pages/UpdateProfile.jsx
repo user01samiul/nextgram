@@ -1,8 +1,13 @@
 import { useAuth } from "@/contexts/AuthContext";
+import coverPhotoUpload, {
+  getCoverPhotoURL,
+  updateCoverPhoto,
+} from "@/lib/coverPhoto";
 import getImageURL from "@/lib/getImageURL";
 import updateProfileAPI from "@/lib/updateProfileAPI";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EmailShow from "../EmailShow";
 import Input from "../FormInput";
 import SelectDp from "../SelectDp";
@@ -17,17 +22,21 @@ function UpdateProfile() {
     imageURL: "",
     email: "",
   });
+  const [coverFile, setCoverFile] = useState();
+  const [coverURL, setCoverURL] = useState(null);
   const [photoFile, setPhotoFile] = useState();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { profileId } = useParams();
 
   useEffect(() => {
     setUpdateProfileInfo({
-      name: user.name,
-      username: user.username,
-      thread: user.thread,
-      bio: user.bio,
-      email: user.email,
+      name: user?.name,
+      username: user?.username,
+      thread: user?.thread,
+      bio: user?.bio,
+      email: user?.email,
     });
   }, []);
 
@@ -46,22 +55,65 @@ function UpdateProfile() {
     setPhotoFile(file);
   }
 
+  const { mutate } = useMutation({
+    mutationFn: async (updatedObject) => {
+      return await updateProfileAPI(user.$id, updatedObject);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["profile", profileId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["userMain", user?.$id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["userMainMobile", user?.$id],
+      });
+    },
+  });
+
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
     const imageURL = photoFile && (await getImageURL(user, photoFile));
+    const coverURL = coverFile && (await getCoverPhotoURL(user, coverFile));
+
     const updatedObject = {
       ...updatedProfileInfo,
       imageURL: imageURL ? imageURL : updatedProfileInfo.imageURL,
     };
-    if (updatedProfileInfo === updatedObject) {
+
+    if (!user.coverPhotos?.length === 0) {
+      const documentId = user.coverPhotos.$id;
+      console.log(documentId)
+      // const updatingCoverPhoto = await updateCoverPhoto(
+      //   documentId,
+      //   coverURL,
+      //   user.$id
+      // );
+    } {
+      const creatingCoverDocument = await coverPhotoUpload(user.$id, coverURL);
+    }
+
+    if (
+      updatedProfileInfo === updatedObject &&
+      user.coverPhotos.coverURL === coverURL
+    ) {
+      setLoading(false);
       return;
     }
-    const updatedProfile = await updateProfileAPI(user.$id, updatedObject);
+    const updatedProfile = mutate(updatedObject);
     setLoading(false);
-    navigate("/");e
-    window.location.reload();
+    navigate(`/profile/${user.$id}`);
   }
+
+  //dynamic things
+
+  const handleCoverPhoto = (e) => {
+    const file = e.target.files && e.target.files[0];
+    setCoverFile(file);
+  };
+
   return (
     <section className="flex-1 h-screeen p-4">
       <h1 className="text-center text-2xl">Update profile</h1>
@@ -105,7 +157,15 @@ function UpdateProfile() {
           name="photoFile"
           handleChange={handlePhotoFile} // Pass the handleChange function here
           value={updatedProfileInfo.photoFile}
+          title={"Select profile picture"}
         />
+        {/* cover photo */}
+        <SelectDp
+          name="coverPhoto"
+          handleChange={handleCoverPhoto} // Pass the handleChange function here
+          title={"Select cover photo"}
+        />
+        {/* --------------- */}
 
         <div className="w-full flex justify-center items-center">
           <button
@@ -115,7 +175,7 @@ function UpdateProfile() {
           >
             {loading ? (
               <div className="flex items-center gap-2 w-full justify-center">
-                <img src="assets/icons/loader.svg" className="h-5 w-5" />
+                <img src="/assets/icons/loader.svg" className="h-5 w-5" />
                 Loading...
               </div>
             ) : (

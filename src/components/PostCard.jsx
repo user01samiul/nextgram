@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { Link } from "react-router-dom";
 import SkeletonPostCard from "./SkeletonPostCard";
 
 function PostCard({ post }) {
@@ -143,7 +144,6 @@ function PostCard({ post }) {
     }
   }
 
-
   //effect 1
   let status;
   if (
@@ -157,21 +157,6 @@ function PostCard({ post }) {
     // setisSaved(false);
     status = false;
   }
-
-
-  // useEffect(() => {
-  //   //effect 1
-  //   const document = user?.save.find((value) => {
-  //     return value.post.$id === post.$id;
-  //   });
-  //   if (document?.post.$id === post.$id) {
-  //     setisSaved(true);
-  //     console.log("ran");
-  //   } else {
-  //     setisSaved(false);
-  //   }
-  // }, []);
-  // console.log(post);
 
   useEffect(() => {
     //effect 2
@@ -238,21 +223,23 @@ function PostCard({ post }) {
       <SkeletonTheme baseColor="#202020" highlightColor="#444">
         {!loading ? (
           <div className="post-card flex flex-col my-3">
-            <div className="cardTop mb-2 flex items-center ">
-              <img
-                src={dp}
-                alt={dp}
-                className="h-[45px] w-[45px] rounded-full mr-2 object-cover"
-              />
-              <div>
-                <div className="flex flex-col">
-                  <span className="text-lg">{creator?.name}</span>
-                  <span className="text-sm text-off-white opacity-60">
-                    {time}
-                  </span>
+            <Link to={`/profile/${creator.accountId}`}>
+              <div className="cardTop mb-2 flex items-center ">
+                <img
+                  src={dp}
+                  alt={dp}
+                  className="h-[40px] w-[40px] rounded-full mr-2 object-cover"
+                />
+                <div>
+                  <div className="flex flex-col">
+                    <span className="text-sm">{creator?.name}</span>
+                    <span className="text-xs text-off-white opacity-60">
+                      {time}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
             <div className="caption flex-1">
               <span>{post.caption}</span>
               <div className="captionPhoto w-full h-[full] overflow-hidden">

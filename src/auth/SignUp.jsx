@@ -51,7 +51,7 @@ function SignUp() {
       };
       const doing_Signin = await singinApi(valuesToPass);
       setIsSigningIn(false);
-      navigate("/update-profile");
+      navigate(`/update-profile/${doing_Signin.userId}`);
       toast({
         title: "Account created successfully.",
       });
@@ -68,11 +68,7 @@ function SignUp() {
   return (
     <div className="flex flex-col justify-center items-center my-auto w-full">
       <div className="flex items-center gap-1 mb-4 text-2xl">
-        <img
-          className="h-[40px] w-[40px]"
-          src="nextgram.png"
-          alt="nextgram"
-        />
+        <img className="h-[40px] w-[40px]" src="nextgram.png" alt="nextgram" />
         <h1>NextGram</h1>
       </div>
       <h2 className="text-lg">Sign up</h2>

@@ -1,8 +1,17 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-function ProfileInfo({ name, imageURL, showInfo, isOnline, handleShowInfo }) {
-  const { signoutApi } = useAuth();
+function ProfileInfo({ user2, showInfo, isOnline, handleShowInfo }) {
+  const { user, signoutApi } = useAuth();
+
+  if (!user2)
+    return (
+      <div className="h-full w-full flex justify-center items-center">
+        <img src="/assets/icons/loader.svg" className="h-5 w-5" />
+      </div>
+    );
+
+  const { name, imageURL } = user2;
 
   return (
     <>
@@ -31,7 +40,7 @@ function ProfileInfo({ name, imageURL, showInfo, isOnline, handleShowInfo }) {
               <span className=" text-lg uppercase cursor-pointer">{name}</span>
             </div>
             <ul className=" text-lg mt-3 w-[95%]  ">
-              <Link to="/profile">
+              <Link to={`/profile/${user.$id}`}>
                 <li
                   className="hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 "
                   onClick={handleShowInfo}
@@ -39,8 +48,11 @@ function ProfileInfo({ name, imageURL, showInfo, isOnline, handleShowInfo }) {
                   Profile
                 </li>
               </Link>
-              <li className="hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 ">
+              {/* <li className="hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 ">
                 Settings
+              </li> */}
+              <li className=" hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 ">
+                <p className="text-gray-500"> Settings</p>
               </li>
               <li
                 className="flex   hover:bg-[#ffc800] active:bg-[#ffc800] hover:text-black rounded-md cursor-pointer    ease-in duration-150 py-3 px-4 "

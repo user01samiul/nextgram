@@ -9,10 +9,10 @@ import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
 
-function ProfilePostCard({ post, user,data }) {
+function ProfilePostCard({ post, user, data, data2 }) {
   const [loading, setLoading] = useState(true);
-  const creator = data.name;
-  const dp = data.imageURL;
+  const creator = data2.name;
+  const dp = data2.imageURL;
   const [isLiked, setisLiked] = useState(false);
   const [isSaved, setisSaved] = useState(false);
   const timestamp = post?.$createdAt;
@@ -84,6 +84,9 @@ function ProfilePostCard({ post, user,data }) {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
+      });
     },
   });
 
@@ -94,6 +97,9 @@ function ProfilePostCard({ post, user,data }) {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["user2", user.$id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["saves", user.$id],
       });
     },
   });
@@ -113,30 +119,17 @@ function ProfilePostCard({ post, user,data }) {
   }
 
 
+
   let status;
   if (
-    post.save.some((object) => {
-      return object.users.$id === user.$id;
+    user.save.some((object) => {
+      return object.post.$id === data2.posts.find((post) => post.$id);
     })
   ) {
-    // setisSaved(true);
     status = true;
   } else {
-    // setisSaved(false);
     status = false;
   }
-
-
-  // useEffect(() => {
-  //   const document = user?.save.find((value) => {
-  //     return value.post.$id === post.$id;
-  //   });
-  //   if (document?.post.$id === post.$id) {
-  //     setisSaved(true);
-  //   } else {
-  //     setisSaved(false);
-  //   }
-  // }, []);
 
   useEffect(() => {
     const document = user2?.save.find((value) => {
@@ -212,12 +205,12 @@ function ProfilePostCard({ post, user,data }) {
               <img
                 src={dp}
                 alt={dp}
-                className="h-[45px] w-[45px] rounded-full mr-2 object-cover"
+                className="h-[40px] w-[40px] rounded-full mr-2 object-cover"
               />
               <div>
                 <div className="flex flex-col">
-                  <span className="text-lg">{creator}</span>
-                  <span className="text-sm text-off-white opacity-60">
+                  <span className="text-sm">{creator}</span>
+                  <span className="text-xs text-off-white opacity-60">
                     {time}
                   </span>
                 </div>

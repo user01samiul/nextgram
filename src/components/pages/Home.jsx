@@ -3,6 +3,7 @@ import getPosts from "@/lib/getPosts";
 import { useQuery } from "@tanstack/react-query";
 import "react-loading-skeleton/dist/skeleton.css";
 import PostCard from "../PostCard";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 function Home() {
   const { user } = useAuth();
@@ -26,9 +27,11 @@ function Home() {
 
   if (posts === undefined)
     return (
-      <div className="flex-1 flex justify-center items-center">
-        <img src="assets/icons/loader.svg" className="h-8 w-8" />
-      </div>
+      <SkeletonTheme baseColor="#202020" highlightColor="#444">
+        <div className="h-full flex-1 ">
+          <Skeleton className="h-full w-full " />
+        </div>
+      </SkeletonTheme>
     );
 
   return (

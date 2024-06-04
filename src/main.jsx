@@ -57,12 +57,12 @@ const router = createBrowserRouter(
         }
       >
         <Route path="" element={<Home />} />
-        <Route path="profile" element={<Profile />} />
+        <Route path="profile/:profileId/*" element={<Profile />} />
         <Route path="people" element={<People />} />
         <Route path="saved" element={<Saved />} />
         <Route path="explore" element={<Explore />} />
         <Route path="create-post" element={<CreatePost />} />
-        <Route path="update-profile" element={<UpdateProfile />}></Route>
+        <Route path="update-profile/:profileId/*" element={<UpdateProfile />}></Route>
       </Route>
     </>
   )

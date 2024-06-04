@@ -9,8 +9,9 @@ import { useEffect, useState } from "react";
 import { SkeletonTheme } from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import SkeletonPostCard from "./SkeletonPostCard";
+import { Link } from "react-router-dom";
 
-function PostCard({ post }) {
+function SavedPostCard({ post }) {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const creator = post.creator;
@@ -228,21 +229,23 @@ function PostCard({ post }) {
       <SkeletonTheme baseColor="#202020" highlightColor="#444">
         {!loading ? (
           <div className="post-card flex flex-col my-3">
-            <div className="cardTop mb-2 flex items-center ">
-              <img
-                src={dp}
-                alt={dp}
-                className="h-[45px] w-[45px] rounded-full mr-2 object-cover"
-              />
-              <div>
-                <div className="flex flex-col">
-                  <span className="text-lg">{creator?.name}</span>
-                  <span className="text-sm text-off-white opacity-60">
-                    {time}
-                  </span>
+             <Link to={`/profile/${creator.accountId}`}>
+              <div className="cardTop mb-2 flex items-center ">
+                <img
+                  src={dp}
+                  alt={dp}
+                  className="h-[45px] w-[45px] rounded-full mr-2 object-cover"
+                />
+                <div>
+                  <div className="flex flex-col">
+                    <span className="text-sm">{creator?.name}</span>
+                    <span className="text-xs text-off-white opacity-60">
+                      {time}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
             <div className="caption flex-1">
               <span>{post.caption}</span>
               <div className="captionPhoto w-full h-[full] overflow-hidden">
@@ -314,4 +317,4 @@ function PostCard({ post }) {
   );
 }
 
-export default PostCard;
+export default SavedPostCard;

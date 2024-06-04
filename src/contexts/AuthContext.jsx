@@ -93,14 +93,13 @@ export function AuthProvider({ children }) {
     signoutApi,
     isOnline,
     setIsOnline,
-    // posts,
   };
   return (
     <AuthContext.Provider value={value}>
       {loading ? ( // Render loading state
         <div className="h-screen w-full flex items-center gap-2 justify-center">
           <img
-            src="infinite-spinner.svg"
+            src="/infinite-spinner.svg"
             className="h-10 w-10 md:h-20 md:w-20"
           />
         </div>
