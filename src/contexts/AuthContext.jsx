@@ -102,7 +102,7 @@ export function AuthProvider({ children }) {
             src="/infinite-spinner.svg"
             className="h-10 w-10 md:h-20 md:w-20"
           />
-          <p className="text-[8px] absolute bottom-4">Version 1.0</p>
+          <p className="text-xs absolute bottom-4">Version 1.0</p>
         </div>
       ) : (
         children // Render children once loading is false
