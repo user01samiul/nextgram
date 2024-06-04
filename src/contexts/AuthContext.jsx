@@ -97,11 +97,12 @@ export function AuthProvider({ children }) {
   return (
     <AuthContext.Provider value={value}>
       {loading ? ( // Render loading state
-        <div className="h-screen w-full flex items-center gap-2 justify-center">
+        <div className="h-screen w-full flex flex-col items-center gap-2 justify-center">
           <img
             src="/infinite-spinner.svg"
             className="h-10 w-10 md:h-20 md:w-20"
           />
+          <p className="text-[8px] absolute bottom-4">Version 1.0</p>
         </div>
       ) : (
         children // Render children once loading is false
