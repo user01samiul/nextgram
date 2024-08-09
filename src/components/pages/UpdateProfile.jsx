@@ -28,6 +28,7 @@ function UpdateProfile() {
   const { profileId } = useParams();
 
   useEffect(() => {
+    console.log("effect ")
     setUpdateProfileInfo({
       name: user?.name,
       username: user?.username,

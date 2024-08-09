@@ -7,7 +7,6 @@ import ProfilePosts from "../ProfilePosts";
 function Profile() {
   const { user, isOnline } = useAuth();
   const { profileId } = useParams();
-console.log(user)
   const { data: userData, isFetching } = useQuery({
     queryKey: ["profile", profileId],
     queryFn: async () => {

@@ -35,17 +35,7 @@ export function AuthProvider({ children }) {
       }
     };
 
-    // const posts = async () => {
-
-    //   const posts = await getPosts();
-    //   setPosts((prev) => {
-    //     return [...prev, ...posts?.documents];
-    //   });
-
-    // };
-
     fetchUserData();
-    // posts();
 
     // Clean-up function for useEffect
     return () => {

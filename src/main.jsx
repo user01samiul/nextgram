@@ -28,7 +28,7 @@ const queryClient = new QueryClient({});
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-      {/* Public routes */}
+      {/* ------------------ Public routes (auth) ------------------ */}
 
       <Route
         path="/signin"
@@ -47,7 +47,7 @@ const router = createBrowserRouter(
         }
       />
 
-      {/* --------------------***Page with Layout***------------------ */}
+      {/* -----------------***Page with Layout***---------------- */}
       <Route
         path="/"
         element={
@@ -62,7 +62,10 @@ const router = createBrowserRouter(
         <Route path="saved" element={<Saved />} />
         <Route path="explore" element={<Explore />} />
         <Route path="create-post" element={<CreatePost />} />
-        <Route path="update-profile/:profileId/*" element={<UpdateProfile />}></Route>
+        <Route
+          path="update-profile/:profileId/*"
+          element={<UpdateProfile />}
+        ></Route>
       </Route>
     </>
   )

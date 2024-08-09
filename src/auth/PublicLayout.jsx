@@ -5,19 +5,6 @@ import { Navigate } from "react-router-dom";
 function PublicLayout({ children }) {
   const { user } = useAuth();
 
-  // useEffect(() => {
-  //   function setVhProperty() {
-  //     let vh = window.innerHeight * 0.01;
-  //     document.documentElement.style.setProperty("--vh", `${vh}px`);
-  //   }
-
-  //   window.addEventListener("resize", setVhProperty);
-  //   setVhProperty(); // Initial call
-
-  //   return () => {
-  //     window.removeEventListener("resize", setVhProperty);
-  //   };
-  // }, []);
 
   return (
     <>
