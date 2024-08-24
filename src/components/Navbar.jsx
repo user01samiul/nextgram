@@ -1,7 +1,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import currentUser from "@/lib/currentUser";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
 
@@ -18,6 +18,8 @@ function Navbar() {
   const handleShowInfo = () => {
     setShowInfo((prev) => !prev);
   };
+
+
 
   return (
     <nav className="md:hidden flex  w-full h-[60px] sticky bg-[#131313] z-50 top-0">
