@@ -114,7 +114,7 @@ function UpdateProfile() {
   };
 
   return (
-    <section className="flex-1 pb-[140px] h-screeen p-4">
+    <section className="flex-1 pb-[130px] h-screeen overflow-scroll p-4">
       <h1 className="text-center text-2xl">Update profile</h1>
       <form onSubmit={handleSubmit}>
         <Input
