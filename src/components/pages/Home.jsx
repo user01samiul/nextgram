@@ -35,7 +35,7 @@ function Home() {
     );
 
   return (
-    <section className="flex-1 pb-[140px] overflow-y-scroll h-screen flex flex-col items-center">
+    <section className="flex-1 pb-[180px] overflow-y-scroll h-screen flex flex-col items-center">
       {postCards}
     </section>
   );
