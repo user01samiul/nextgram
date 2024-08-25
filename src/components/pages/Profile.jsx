@@ -40,7 +40,7 @@ function Profile() {
   const coverPhotoURL = arr[0]?.coverURL;
 
   return (
-    <section className="flex-1 pb-[180px] overflow-y-scroll">
+    <section className="flex-1 pb-[220px] overflow-y-scroll">
       <div className="userinfo relative">
         <div className="cover_photo w-full h-[280px] relative  ">
           <div className=" w-full h-[280px] relative ease-in duration-150">
