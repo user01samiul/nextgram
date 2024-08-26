@@ -70,7 +70,7 @@ function CreatePost() {
     window.location.reload(); 
   };
   return (
-    <div className="post-container pb-[130px] py-8 md:px-8 px-3 flex-1 h-screen overflow-y-scroll">
+    <div className="post-container pb-[180px] py-8 md:px-8 px-3 flex-1 h-screen overflow-y-scroll">
       <h1 className="text-center text-2xl mb-8">Create a post</h1>
       <form action="/" onSubmit={handleSubmit} className="w-[100%] md:w-[90%] mx-auto">
         <label htmlFor="caption" className="flex flex-col mb-4">
