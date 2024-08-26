@@ -1,5 +1,5 @@
 import { useAuth } from "@/contexts/AuthContext";
-import img from "/public/assets/images/side-img.png"
+import img from "/public/assets/images/side-img.svg"
 import { Navigate } from "react-router-dom";
 
 function PublicLayout({ children }) {
