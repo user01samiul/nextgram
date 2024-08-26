@@ -1,10 +1,9 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { useEffect } from "react";
+import img from "/public/assets/images/side-img.png"
 import { Navigate } from "react-router-dom";
 
 function PublicLayout({ children }) {
   const { user } = useAuth();
-
 
   return (
     <>
@@ -16,10 +15,7 @@ function PublicLayout({ children }) {
             {children}
           </div>
           <div className="coverPhoto lg:w-[50%] hidden lg:block">
-            <img
-              src="assets/images/side-img.svg"
-              alt="side image signin signup"
-            />
+            <img src={img} alt="side image signin signup" />
           </div>
         </section>
       )}

@@ -20,7 +20,7 @@ function InputField({
         id={name}
         onChange={handleChange}
         placeholder={placeholder}
-        className="w-80% bg-[#f5f7ff] px-2  h-[40px] focus:outline-none w-full text-black"
+        className="shadow appearance-none border rounded w-full py-[10px] px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
       />
     </div>
   );
